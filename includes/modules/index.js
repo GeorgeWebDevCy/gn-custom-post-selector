@@ -1,3 +1,3 @@
-import HelloWorld from './HelloWorld/HelloWorld';
+import CustomGNPostSelector from './CustomGNPostSelector/CustomGNPostSelector';
 
-export default [HelloWorld];
+export default [ CustomGNPostSelector ];

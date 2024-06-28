@@ -1,8 +1,7 @@
 <?php
 
-class GNWEBDEVCY_HelloWorld extends ET_Builder_Module {
-
-	public $slug       = 'gnwebdevcy_hello_world';
+class GNWEBDEVCY_CustomGNPostSelector extends ET_Builder_Module {
+	public $slug       = 'gnwebdevcy_custom_gn_post_selector';
 	public $vb_support = 'on';
 
 	protected $module_credits = array(
@@ -12,7 +11,7 @@ class GNWEBDEVCY_HelloWorld extends ET_Builder_Module {
 	);
 
 	public function init() {
-		$this->name = esc_html__( 'Hello World', 'gnwebdevcy-gn-custom-post-selector' );
+		$this->name = esc_html__( 'GN Custom Post Selector', 'gnwebdevcy-gn-custom-post-selector' );
 	}
 
 	public function get_fields() {

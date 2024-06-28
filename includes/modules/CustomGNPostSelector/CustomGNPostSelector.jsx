@@ -5,9 +5,8 @@ import React, { Component } from 'react';
 import './style.css';
 
 
-class HelloWorld extends Component {
-
-  static slug = 'gnwebdevcy_hello_world';
+class CustomGNPostSelector extends Component {
+  static slug = 'gnwebdevcy_custom_gn_post_selector';
 
   render() {
     const Content = this.props.content;
@@ -20,4 +19,4 @@ class HelloWorld extends Component {
   }
 }
 
-export default HelloWorld;
+export default CustomGNPostSelector;
