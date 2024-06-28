@@ -31,4 +31,4 @@ class GNWEBDEVCY_CustomGNPostSelector extends ET_Builder_Module {
 	}
 }
 
-new GNWEBDEVCY_HelloWorld;
+new GNWEBDEVCY_CustomGNPostSelector;
