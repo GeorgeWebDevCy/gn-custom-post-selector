@@ -1,22 +1,32 @@
 // External Dependencies
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 // Internal Dependencies
 import './style.css';
-
 
 class CustomGNPostSelector extends Component {
   static slug = 'gnwebdevcy_custom_gn_post_selector';
 
   render() {
-    const Content = this.props.content;
+    const {title, posts: selectedPosts } = this.props;
 
     return (
-      <h1>
-        <Content/>
-      </h1>
+      <div className="custom-gn-post-selector">
+        {title && <h2>{title}</h2>}
+        <ul>
+          {selectedPosts.split('|').map(postId => (
+            <li key={postId}>{postId}</li> // Update this line to show post titles if available
+          ))}
+        </ul>
+      </div>
     );
   }
 }
+
+CustomGNPostSelector.propTypes = {
+  title: PropTypes.string,
+  posts: PropTypes.string, // Pipe-separated string of selected post IDs
+};
 
 export default CustomGNPostSelector;
