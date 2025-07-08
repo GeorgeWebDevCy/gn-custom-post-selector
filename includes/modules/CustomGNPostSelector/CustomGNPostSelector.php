@@ -2,7 +2,7 @@
 
 class GNWEBDEVCY_CustomGNPostSelector extends ET_Builder_Module {
 	public $slug       = 'gnwebdevcy_custom_gn_post_selector';
-	public $vb_support = 'on';
+       public $vb_support = 'off';
 
 	protected $module_credits = array(
 		'module_uri' => 'https://www.georgenicolaou.me/plugins/gn-custom-post-selector',
