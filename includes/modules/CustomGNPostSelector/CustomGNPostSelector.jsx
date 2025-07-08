@@ -8,6 +8,18 @@ import './style.css';
 class CustomGNPostSelector extends Component {
   static slug = 'gnwebdevcy_custom_gn_post_selector';
 
+  componentDidMount() {
+    if (window && window.console) {
+      console.debug('GN Custom Post Selector mounted', this.props);
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (window && window.console) {
+      console.debug('GN Custom Post Selector updated', { prevProps, currentProps: this.props });
+    }
+  }
+
   render() {
     const {title, posts: selectedPosts } = this.props;
 
