@@ -14,8 +14,10 @@ class GNWEBDEVCY_CustomGNPostSelector extends ET_Builder_Module {
 		$this->name = esc_html__( 'GN Custom Post Selector', 'gnwebdevcy-gn-custom-post-selector' );
 	}
 
-	public function get_fields() {
-		return array(
+        public function get_fields() {
+                $current_post_type = isset( $this->props['post_type'] ) ? $this->props['post_type'] : 'post';
+
+                return array(
 			'title' => array(
 				'label'           => esc_html__( 'Title', 'gnwebdevcy-gn-custom-post-selector' ),
 				'type'            => 'text',
@@ -31,14 +33,14 @@ class GNWEBDEVCY_CustomGNPostSelector extends ET_Builder_Module {
 				'description'     => esc_html__( 'Select the post type.', 'gnwebdevcy-gn-custom-post-selector' ),
 				'toggle_slug'     => 'main_content',
 			),
-			'posts' => array(
-				'label'           => esc_html__( 'Posts', 'gnwebdevcy-gn-custom-post-selector' ),
-				'type'            => 'multiple_checkboxes',
-				'options'         => $this->get_posts_options(),
-				'option_category' => 'basic_option',
-				'description'     => esc_html__( 'Select posts to display.', 'gnwebdevcy-gn-custom-post-selector' ),
-				'toggle_slug'     => 'main_content',
-			),
+                        'posts' => array(
+                                'label'           => esc_html__( 'Posts', 'gnwebdevcy-gn-custom-post-selector' ),
+                                'type'            => 'multiple_checkboxes',
+                                'options'         => $this->get_posts_options( $current_post_type ),
+                                'option_category' => 'basic_option',
+                                'description'     => esc_html__( 'Select posts to display.', 'gnwebdevcy-gn-custom-post-selector' ),
+                                'toggle_slug'     => 'main_content',
+                        ),
 		);
 	}
 
