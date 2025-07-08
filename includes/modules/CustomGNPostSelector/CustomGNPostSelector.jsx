@@ -8,29 +8,44 @@ import './style.css';
 class CustomGNPostSelector extends Component {
   static slug = 'gnwebdevcy_custom_gn_post_selector';
 
-  componentDidMount() {
+  constructor(props) {
+    super(props);
+    this.state = { logs: [] };
+  }
+
+  log(message, data) {
     if (window && window.console) {
-      console.debug('GN Custom Post Selector mounted', this.props);
+      console.debug(message, data);
     }
+    const entry = `${message} ${JSON.stringify(data)}`;
+    this.setState((state) => ({ logs: [...state.logs, entry] }));
+  }
+
+  componentDidMount() {
+    this.log('GN Custom Post Selector mounted', this.props);
   }
 
   componentDidUpdate(prevProps) {
-    if (window && window.console) {
-      console.debug('GN Custom Post Selector updated', { prevProps, currentProps: this.props });
-    }
+    this.log('GN Custom Post Selector updated', { prevProps, currentProps: this.props });
   }
 
   render() {
-    const {title, posts: selectedPosts } = this.props;
+    const { title, posts: selectedPosts } = this.props;
+    const { logs } = this.state;
 
     return (
       <div className="custom-gn-post-selector">
         {title && <h2>{title}</h2>}
         <ul>
-          {selectedPosts.split('|').map(postId => (
+          {selectedPosts.split('|').map((postId) => (
             <li key={postId}>{postId}</li> // Update this line to show post titles if available
           ))}
         </ul>
+        {logs.length > 0 && (
+          <pre className="gncps-debug">
+            {logs.join('\n')}
+          </pre>
+        )}
       </div>
     );
   }
