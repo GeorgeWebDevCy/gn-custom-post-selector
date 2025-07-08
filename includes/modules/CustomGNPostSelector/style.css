@@ -1,3 +1,12 @@
 .gnwebdevcy_hello_world {
 
 }
+
+.custom-gn-post-selector .gncps-debug {
+  margin-top: 10px;
+  padding: 10px;
+  background: #f9f9f9;
+  border: 1px dashed #ccc;
+  font-family: monospace;
+  white-space: pre-wrap;
+}

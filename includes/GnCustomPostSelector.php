@@ -27,7 +27,7 @@ class GNWEBDEVCY_GnCustomPostSelector extends DiviExtension {
 	 *
 	 * @var string
 	 */
-       public $version = '1.0.5';
+       public $version = '1.0.6';
 
 	/**
 	 * GNWEBDEVCY_GnCustomPostSelector constructor.
