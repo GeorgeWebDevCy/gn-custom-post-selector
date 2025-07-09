@@ -3,7 +3,7 @@
 Plugin Name: Gn Custom Post Selector
 Plugin URI:  https://www.georgenicolaou.me/plugins/gn-custom-post-selector
 Description: A Divi Builder Module that allows a user to add a title and select the post from any post type to dosplay as a list
-Version:     1.0.8
+Version:     1.0.9
 Author:      George Nicolaou
 Author URI:  httgps://www.georgenicolaou.me
 License:     GPL2
@@ -54,7 +54,7 @@ function gncps_enqueue_builder_assets() {
         'gncps-admin',
         plugin_dir_url( __FILE__ ) . 'scripts/admin.js',
         array( 'jquery' ),
-        '1.0.8',
+        '1.0.9',
         true
     );
 }
