@@ -27,18 +27,35 @@ $(window).on('et_builder_api_ready', (event, API) => {
   };
 
   const updatePosts = (modal) => {
-    const postType = modal.find('select[name$="post_type"]').val() || 'post';
-    const search = modal.find('.gncps-search-input').val() || '';
-    fetchPosts(postType, search, (posts) => {
-      const container = modal.find('[data-field-key="posts"] .et-pb-option-container');
-      if (!container.length) return;
-      const selected = {};
+    const postType   = modal.find('select[name$="post_type"]').val() || 'post';
+    const search     = modal.find('.gncps-search-input').val() || '';
+    const postsField = modal.find('[data-field-key="posts"]');
+    const container  = postsField.find('.et-pb-option-container');
+    if (!container.length) return;
+
+    // Determine input name so Divi can save the selections correctly
+    let inputName = postsField.data('input-name');
+    if (!inputName) {
+      inputName = container.find('input[type="checkbox"]').first().attr('name') || '';
+      postsField.data('input-name', inputName);
+    }
+
+    // If post type changed clear previous selections
+    const prevType = postsField.data('prev-post-type');
+    const selected = {};
+    if (prevType === postType) {
       container.find('input:checked').each(function(){ selected[$(this).val()] = true; });
+    } else {
+      postsField.data('prev-post-type', postType);
+    }
+
+    fetchPosts(postType, search, (posts) => {
       container.empty();
       posts.forEach((p) => {
         const checked = selected[p.id] ? ' checked="checked"' : '';
-        container.append(`<label class="et_pb_checkbox_label"><input type="checkbox" value="${p.id}"${checked}> ${p.title}</label>`);
+        container.append(`<label class="et_pb_checkbox_label"><input type="checkbox" name="${inputName}" value="${p.id}"${checked}> ${p.title}</label>`);
       });
+      container.find('input').trigger('change');
     });
   };
 
