@@ -14,35 +14,36 @@ class GNWEBDEVCY_CustomGNPostSelector extends ET_Builder_Module {
 		$this->name = esc_html__( 'GN Custom Post Selector', 'gnwebdevcy-gn-custom-post-selector' );
 	}
 
-        public function get_fields() {
-                $current_post_type = isset( $this->props['post_type'] ) ? $this->props['post_type'] : 'post';
+       public function get_fields() {
 
-                return array(
-			'title' => array(
-				'label'           => esc_html__( 'Title', 'gnwebdevcy-gn-custom-post-selector' ),
-				'type'            => 'text',
-				'option_category' => 'basic_option',
-				'description'     => esc_html__( 'Enter the title for the module.', 'gnwebdevcy-gn-custom-post-selector' ),
-				'toggle_slug'     => 'main_content',
-			),
-			'post_type' => array(
-				'label'           => esc_html__( 'Post Type', 'gnwebdevcy-gn-custom-post-selector' ),
-				'type'            => 'select',
-				'options'         => $this->get_post_types(),
-				'option_category' => 'basic_option',
-				'description'     => esc_html__( 'Select the post type.', 'gnwebdevcy-gn-custom-post-selector' ),
-				'toggle_slug'     => 'main_content',
-			),
-                        'posts' => array(
-                                'label'           => esc_html__( 'Posts', 'gnwebdevcy-gn-custom-post-selector' ),
-                                'type'            => 'multiple_checkboxes',
-                                'options'         => $this->get_posts_options( $current_post_type ),
-                                'option_category' => 'basic_option',
-                                'description'     => esc_html__( 'Select posts to display.', 'gnwebdevcy-gn-custom-post-selector' ),
-                                'toggle_slug'     => 'main_content',
-                        ),
-		);
-	}
+               return array(
+                       'title' => array(
+                               'label'           => esc_html__( 'Title', 'gnwebdevcy-gn-custom-post-selector' ),
+                               'type'            => 'text',
+                               'option_category' => 'basic_option',
+                               'description'     => esc_html__( 'Enter the title for the module.', 'gnwebdevcy-gn-custom-post-selector' ),
+                               'toggle_slug'     => 'main_content',
+                       ),
+                       'post_type' => array(
+                               'label'           => esc_html__( 'Post Type', 'gnwebdevcy-gn-custom-post-selector' ),
+                               'type'            => 'select',
+                               'options'         => $this->get_post_types(),
+                               'affects'         => array( 'posts' ),
+                               'option_category' => 'basic_option',
+                               'description'     => esc_html__( 'Select the post type.', 'gnwebdevcy-gn-custom-post-selector' ),
+                               'toggle_slug'     => 'main_content',
+                       ),
+                       'posts' => array(
+                               'label'           => esc_html__( 'Posts', 'gnwebdevcy-gn-custom-post-selector' ),
+                               'type'            => 'multiple_checkboxes',
+                               'options_callback' => array( $this, 'get_posts_options' ),
+                               'callback_requires'=> array( 'post_type' ),
+                               'option_category' => 'basic_option',
+                               'description'     => esc_html__( 'Select posts to display.', 'gnwebdevcy-gn-custom-post-selector' ),
+                               'toggle_slug'     => 'main_content',
+                       ),
+               );
+       }
 
 	public function get_post_types() {
 		$post_types = get_post_types(array('public' => true), 'objects');
@@ -55,31 +56,45 @@ class GNWEBDEVCY_CustomGNPostSelector extends ET_Builder_Module {
 		return $options;
 	}
 
-	public function get_posts_options($post_type = 'post') {
-		$posts = get_posts(array(
-			'post_type' => $post_type,
-			'posts_per_page' => -1,
-		));
+       public function get_posts_options( $args = array() ) {
+               $post_type = isset( $args['post_type'] ) ? $args['post_type'] : 'post';
 
-		$options = array();
+               $posts = get_posts( array(
+                       'post_type'      => $post_type,
+                       'posts_per_page' => -1,
+                       'orderby'        => 'title',
+                       'order'          => 'ASC',
+                       'post_status'    => 'publish',
+               ) );
 
-		foreach ($posts as $post) {
-			$options[$post->ID] = $post->post_title;
-		}
+               $options = array();
 
-		return $options;
-	}
+               foreach ( $posts as $post ) {
+                       $options[ 'post_' . $post->ID ] = esc_html( $post->post_title );
+               }
 
-	public function render( $attrs, $content = null, $render_slug ) {
-		$title = $this->props['title'];
-		$post_type = $this->props['post_type'];
-		$posts = explode('|', $this->props['posts']);
+               return $options;
+       }
 
-		// Fetch the posts
-		$selected_posts = get_posts(array(
-			'post_type' => $post_type,
-			'post__in' => $posts,
-		));
+       public function render( $attrs, $content = null, $render_slug ) {
+               $title     = $this->props['title'];
+               $post_type = $this->props['post_type'];
+
+               $raw  = explode( '|', $this->props['posts'] );
+               $ids  = array_map( function( $v ) {
+                       return intval( str_replace( 'post_', '', $v ) );
+               }, $raw );
+               $ids  = array_filter( $ids );
+
+               $selected_posts = array();
+               if ( $ids ) {
+                       $selected_posts = get_posts( array(
+                               'post_type'      => $post_type,
+                               'post__in'       => $ids,
+                               'orderby'        => 'post__in',
+                               'posts_per_page' => -1,
+                       ) );
+               }
 
 		$output = '<div class="custom-gn-post-selector">';
 		if ($title) {
@@ -99,5 +114,4 @@ class GNWEBDEVCY_CustomGNPostSelector extends ET_Builder_Module {
 		return $output;
 	}
 }
-
 new GNWEBDEVCY_CustomGNPostSelector;
