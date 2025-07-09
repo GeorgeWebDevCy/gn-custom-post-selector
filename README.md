@@ -670,3 +670,11 @@ If you have ideas for more “How To” recipes that should be on this page, [le
 ## Automatic Updates
 
 This plugin uses the [Plugin Update Checker](https://github.com/YahnisElsts/plugin-update-checker) library to receive updates directly from its GitHub repository.
+
+## Building the Module
+
+To compile the extension and generate a release archive, run the `build.sh` script from the project root. This script installs dependencies, builds the optimized bundles and creates `gn-custom-post-selector.zip`.
+
+```bash
+./build.sh
+```
